@@ -1,0 +1,99 @@
+# yaml 配置实例
+version: '3'
+services:
+# redis
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    container_name: redis     # 容器名称
+    restart: always           # 遇到错误重新启动
+    privileged: true          # 拥有容器内命令执行的权限
+    volumes:
+      - ./redis/redis.conf:/etc/redis/redis.conf:ro # redis配置文件
+      - ./redis/db:/var/db                          # redisdb存储本地
+      - ./redis/log:/var/log                        # redislog存储本地
+    command: redis-server /etc/redis/redis.conf     # 指定redis启动文件启动
+    networks:
+      cluster_net:
+        ipv4_address: 172.25.0.2
+# mysql
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    container_name: mysql
+    restart: always
+    volumes:
+      - ./mysql/my.cnf:/etc/mysql/mysql.conf.d/my.cnf:ro
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/log:/var/lib/log
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      cluster_net:
+        ipv4_address: 172.25.0.3
+# 存储容器
+  www:
+    image: busybox
+    container_name: www
+    restart: always
+    tty: true
+    volumes:
+      - /data/www:/www
+      - ./data:/data
+    networks:
+      cluster_net:
+        ipv4_address: 172.25.0.4
+# php71
+  php71:
+    image: registry.cn-hangzhou.aliyuncs.com/php71-fpm/php71-fpm:v001
+    ports:
+      - 4399:4399
+    expose:
+      - 9000
+    container_name: php71
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./php/php71-fpm/conf.d:/usr/local/etc/php/conf.d
+      - ./php/php71-fpm/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./php/php71-fpm/log:/var/log/:rw
+    volumes_from:
+      - www
+    restart: always
+    networks:
+      cluster_net:
+        ipv4_address: 172.25.0.5
+
+# nginx
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    container_name: nginx
+    volumes:
+      - ./nginx/log:/var/log/nginx/:rw
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d/:/etc/nginx/conf.d/:ro
+    volumes_from:
+      - www
+    restart: always
+    depends_on:
+      - php71
+    networks:
+      cluster_net:
+        ipv4_address: 172.25.0.6
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  cluster_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/24
+          gateway: 172.25.0.1
