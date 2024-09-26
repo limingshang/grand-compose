@@ -59,8 +59,6 @@ services:
       - ./php/php71-fpm/conf.d:/usr/local/etc/php/conf.d
       - ./php/php71-fpm/php.ini:/usr/local/etc/php/php.ini:ro
       - ./php/php71-fpm/log:/var/log/:rw
-      - ./php/php71-fpm/supervisor/:/etc/supervisor/conf.d:rw
-      - ./php/log:/var/log/supervisor/:rw
     volumes_from:
       - www
     restart: always
