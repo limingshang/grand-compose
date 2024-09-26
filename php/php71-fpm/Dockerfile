@@ -23,17 +23,11 @@ RUN apt-get update  && apt-get install -y  \
         libsystemd-dev \
         --allow-unauthenticated
 
-RUN docker-php-ext-install -j$(nproc) gd mysqli intl zip pdo_mysql soap bcmath
+RUN docker-php-ext-install -j$(nproc) gd mysqli intl zip pdo_mysql soap bcmath mcrypt
 
 RUN pecl install -o -f  mongodb-1.11.1 oauth  redis swoole-4.4.26 imagick \
     && rm -rf /tmp/pear && docker-php-ext-enable  mongodb oauth  redis swoole
 
-RUN wget https://pecl.php.net/get/mcrypt-1.0.5.tgz  \
-    && tar -zxvf mcrypt-1.0.5.tgz  \
-    && cd mcrypt-1.0.5  \
-    && phpize && ./configure && make && make install
-
-RUN docker-php-ext-enable mcrypt
 
 RUN curl -sS https://getcomposer.org/installer | php \
  && mv composer.phar /usr/local/bin/composer \
