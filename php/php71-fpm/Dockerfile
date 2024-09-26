@@ -39,4 +39,4 @@ RUN curl -sS https://getcomposer.org/installer | php \
 
 EXPOSE 9000
 
-CMD php-fpm && supervisord -c /etc/supervisor/supervisord.conf
+CMD ["php-fpm"]
