@@ -1,1 +1,0 @@
-2024-09-25 20:54:38     {"file":"/www/grand/vendor/yiisoft/yii2/db/ActiveRecord.php","line":242,"error":"Key \"sale_id\" is not a column name and can not be used as a filter","params":{"op":20,"order_no":"240925165154"},"api":"order/help-op-add"}
