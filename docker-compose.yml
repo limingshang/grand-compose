@@ -46,7 +46,7 @@ services:
         ipv4_address: 172.25.0.4
 # php71
   php71:
-    image: registry.cn-hangzhou.aliyuncs.com/php71-fpm/php71-fpm:v012
+    image: php71:v0002
     ports:
       - 4399:4399
     expose:
