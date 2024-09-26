@@ -29,7 +29,7 @@ RUN pecl install -o -f mongodb-1.11.1 oauth swoole-4.4.26 imagick \
     && rm -rf /tmp/pear && docker-php-ext-enable  mongodb oauth  swoole imagick
 
 
-RUN pecl install -o -f redis:4.2 \
+RUN pecl install -o -f redis-4.3.0 \
     && rm -rf /tmp/pear && docker-php-ext-enable redis
 
 
