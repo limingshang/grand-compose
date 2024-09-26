@@ -46,7 +46,7 @@ services:
         ipv4_address: 172.25.0.4
 # php71
   php71:
-    image: registry.cn-hangzhou.aliyuncs.com/php71-fpm/php71-fpm:v004
+    image: registry.cn-hangzhou.aliyuncs.com/php71-fpm/php71-fpm:v012
     ports:
       - 4399:4399
     expose:
@@ -59,9 +59,12 @@ services:
       - ./php/php71-fpm/conf.d:/usr/local/etc/php/conf.d
       - ./php/php71-fpm/php.ini:/usr/local/etc/php/php.ini:ro
       - ./php/php71-fpm/log:/var/log/:rw
+      - ./php/supervisor/:/etc/supervisor/conf.d:rw
+      - ./php/log:/var/log/supervisor/:rw
     volumes_from:
       - www
     restart: always
+    command: ["supervisord", "-n"]
     networks:
       cluster_net:
         ipv4_address: 172.25.0.5

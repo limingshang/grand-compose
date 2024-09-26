@@ -1,0 +1,4 @@
+2024-09-19 09:36:23     {"info":"starting  sync order remark","third_order_no":"2022070100001454","params":{"orderNo":"2022070100001454","orderExplain":"nisi sit sunt dolore"}}
+2024-09-19 09:36:24     {"info":"[create order sync order remark trip v1.0.1] return error","third_order_no":"2022070100001454","error":"code:8301001,message:当前订单号不存在","file":"/www/scb/common/components/EasyCruise/Proxies/CenturyTripV101Proxy.php","line":89}
+2024-09-19 09:36:35     {"info":"starting  sync order remark","third_order_no":"2022070100001454","params":{"orderNo":"2022070100001454","orderExplain":"nisi sit sunt dolore"}}
+2024-09-19 09:36:35     {"info":"[create order sync order remark trip v1.0.1] return error","third_order_no":"2022070100001454","error":"code:8301001,message:当前订单号不存在","file":"/www/scb/common/components/EasyCruise/Proxies/CenturyTripV101Proxy.php","line":89}
