@@ -25,8 +25,8 @@ RUN apt-get update  && apt-get install -y  \
 
 RUN docker-php-ext-install -j$(nproc) gd mysqli intl zip pdo_mysql soap bcmath
 
-RUN pecl install -o -f  mongodb-1.11.1 oauth  redis swoole-4.4.26 grpc protobuf imagick \
-    && rm -rf /tmp/pear && docker-php-ext-enable  mongodb oauth  redis swoole grpc protobuf
+RUN pecl install -o -f  mongodb-1.11.1 oauth  redis swoole-4.4.26 imagick \
+    && rm -rf /tmp/pear && docker-php-ext-enable  mongodb oauth  redis swoole
 
 RUN wget https://pecl.php.net/get/mcrypt-1.0.5.tgz  \
     && tar -zxvf mcrypt-1.0.5.tgz  \
