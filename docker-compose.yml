@@ -64,7 +64,7 @@ services:
     volumes_from:
       - www
     restart: always
-    command: ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+    command: ["supervisord", "-n"]
     networks:
       cluster_net:
         ipv4_address: 172.25.0.5
