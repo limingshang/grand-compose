@@ -23,12 +23,15 @@ RUN apt-get update  && apt-get install -y  \
         libsystemd-dev \
         --allow-unauthenticated
 
-RUN docker-php-ext-install -j$(nproc) gd mysqli intl zip pdo_mysql soap bcmath mcrypt
+RUN docker-php-ext-install -j$(nproc) gd mysqli intl zip pdo_mysql soap bcmath mcrypt redis
 
-RUN pecl install -o -f  mongodb-1.11.1 oauth  redis swoole-4.4.26 imagick \
-    && rm -rf /tmp/pear && docker-php-ext-enable  mongodb oauth  redis swoole imagick
+RUN pecl install -o -f  mongodb-1.11.1 oauth  swoole-4.4.26 imagick \
+    && rm -rf /tmp/pear && docker-php-ext-enable  mongodb oauth swoole imagick
 
 
+RUN curl -sS https://getcomposer.org/installer | php 
+RUN mv composer.phar /usr/local/bin/composer 
+RUN chmod +x /usr/local/bin/composer 
 
 EXPOSE 9000
 
