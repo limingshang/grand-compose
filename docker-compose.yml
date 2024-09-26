@@ -59,12 +59,12 @@ services:
       - ./php/php71-fpm/conf.d:/usr/local/etc/php/conf.d
       - ./php/php71-fpm/php.ini:/usr/local/etc/php/php.ini:ro
       - ./php/php71-fpm/log:/var/log/:rw
-      - ./php/supervisor/:/etc/supervisor/conf.d:rw
+      - ./php/php71-fpm/supervisor/:/etc/supervisor/conf.d:rw
       - ./php/log:/var/log/supervisor/:rw
     volumes_from:
       - www
     restart: always
-    command: ["supervisord", "-n"]
+    command: ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
     networks:
       cluster_net:
         ipv4_address: 172.25.0.5
