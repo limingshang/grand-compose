@@ -1,39 +1,37 @@
-# yaml 配置实例
 version: '3'
 services:
 # redis
-#  redis:
-#    image: redis:latest
-#    ports:
-#      - 6379:6379
-#    container_name: redis     # 容器名称
-#    restart: always           # 遇到错误重新启动
-#    privileged: true          # 拥有容器内命令执行的权限
-#    volumes:
-#      - ./redis/redis.conf:/etc/redis/redis.conf:ro # redis配置文件
-#      - ./redis/db:/var/db                          # redisdb存储本地
-#      - ./redis/log:/var/log                        # redislog存储本地
-#    command: redis-server /etc/redis/redis.conf     # 指定redis启动文件启动
-#    networks:
-#      cluster_net:
-#        ipv4_address: 172.25.0.2
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    container_name: redis     # 容器名称
+    restart: always           # 遇到错误重新启动
+    privileged: true          # 拥有容器内命令执行的权限
+    volumes:
+      - ./redis/redis.conf:/etc/redis/redis.conf:ro # redis配置文件
+      - ./redis/db:/var/db                          # redisdb存储本地
+      - ./redis/log:/var/log                        # redislog存储本地
+    command: redis-server /etc/redis/redis.conf     # 指定redis启动文件启动
+    networks:
+      cluster_net:
+        ipv4_address: 172.25.0.2
 # mysql
-#  mysql:
-#    image: mysql:8.0
-#    ports:
-#      - 3306:3306
-#    container_name: mysql
-#    restart: always
-#    volumes:
-#      - ./mysql/my.cnf:/etc/my.cnf:ro
-#      - ./mysql/my.cnf:/etc/mysql/mysql.conf.d/my.cnf:ro
-#      - ./mysql/data:/var/lib/mysql
-#      - ./mysql/log:/var/lib/log
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=root
-#    networks:
-#      cluster_net:
-#        ipv4_address: 172.25.0.3
+  mysql:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    container_name: mysql
+    restart: always
+    volumes:
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/log:/var/lib/log
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      cluster_net:
+        ipv4_address: 172.25.0.3
 # 存储容器
   www:
     image: busybox
@@ -47,26 +45,26 @@ services:
       cluster_net:
         ipv4_address: 172.25.0.4
 # php71
-#  php71:
-#    image: registry.cn-hangzhou.aliyuncs.com/php71-fpm/php71-fpm:v001
-#    ports:
-#      - 4399:4399
-#    expose:
-#      - 9000
-#    container_name: php71
-#    depends_on:
-#      - mysql
-#      - redis
-#    volumes:
-#      - ./php/php71-fpm/conf.d:/usr/local/etc/php/conf.d
-#      - ./php/php71-fpm/php.ini:/usr/local/etc/php/php.ini:ro
-#      - ./php/php71-fpm/log:/var/log/:rw
-#    volumes_from:
-#      - www
-#    restart: always
-#    networks:
-#      cluster_net:
-#        ipv4_address: 172.25.0.5
+  php71:
+    image: registry.cn-hangzhou.aliyuncs.com/php71-fpm/php71-fpm:v002
+    ports:
+      - 4399:4399
+    expose:
+      - 9000
+    container_name: php71
+    depends_on:
+      - mysql
+      - redis
+    volumes:
+      - ./php/php71-fpm/conf.d:/usr/local/etc/php/conf.d
+      - ./php/php71-fpm/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./php/php71-fpm/log:/var/log/:rw
+    volumes_from:
+      - www
+    restart: always
+    networks:
+      cluster_net:
+        ipv4_address: 172.25.0.5
 
 # nginx
   nginx:
@@ -74,6 +72,9 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 8080:8080
+      - 8081:8081
+      - 8083:8083
     container_name: nginx
     volumes:
       - ./nginx/log:/var/log/nginx/:rw
@@ -82,8 +83,8 @@ services:
     volumes_from:
       - www
     restart: always
-#    depends_on:
-#      - php71
+    depends_on:
+      - php71
     networks:
       cluster_net:
         ipv4_address: 172.25.0.6
