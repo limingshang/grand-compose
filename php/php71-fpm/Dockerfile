@@ -3,7 +3,8 @@ WORKDIR /www
 RUN cp /usr/share/zoneinfo/America/Los_Angeles /etc/localtime \
 && echo 'America/Los_Angeles' >/etc/timezone
 
-RUN mkdir -p /var/log/supervisor/
+RUN pecl install -o -f  imagick \
+    && rm -rf /tmp/pear && mkdir -p /var/log/supervisor/ && mkdir -p /data/log/redis-queue/log/
 
-
+RUN supervisord -c /etc/supervisor/supervisord.conf
 
