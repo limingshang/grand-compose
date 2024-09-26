@@ -29,9 +29,9 @@ RUN pecl install -o -f  mongodb-1.11.1 oauth  redis swoole-4.4.26 imagick \
     && rm -rf /tmp/pear && docker-php-ext-enable  mongodb oauth  redis swoole
 
 
-RUN curl -sS https://getcomposer.org/installer | php \
- && mv composer.phar /usr/local/bin/composer \
- && chmod +x /usr/local/bin/composer && composer config -g repo.packagist composer https://packagist.phpcomposer.com && composer config -g --unset repos.packagist
+RUN curl -sS https://getcomposer.org/installer | php 
+RUN mv composer.phar /usr/local/bin/composer 
+RUN chmod +x /usr/local/bin/composer 
 
 EXPOSE 9000
 
